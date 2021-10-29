@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors', 1);
+
 header("Access-Control-Allow-Origin: *"); 
 // allows everyone to access your rest-api
 
@@ -18,25 +18,25 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database class
 include 'database.php';
 
-class Secondary extends Database
+class Merchhant extends Database
 {
     
-    private $table_name = "secondary"; // database secondary table_name
+    private $table_name = "merchhant"; // database Merchhant table_name
 
-    function validation($semail1,$spassword1) // check the validation of secondary credentials
+    function validation($memail1,$mpassword1) // check the validation of Merchhant credentials
     {
         $t1 = $t2 = true;
-        if(!filter_var($semail1, FILTER_VALIDATE_EMAIL))
+        if(!filter_var($memail1, FILTER_VALIDATE_EMAIL))
         {
-            //status code 422 because secondary enter invalid email pattern;
+            //status code 422 because Merchhant enter invalid email pattern;
             $display_message = array("Status_code"=>422, "Message"=>'Invalid Email Pattern');
             print_r(json_encode($display_message));
             $t1 = false;
             echo $t1;
         }
-        if(strlen($spassword1) < 5)
+        if(strlen($mpassword1) < 5)
         {
-            //status code 422 because secondary password length is less than 10 digits / characters.
+            //status code 422 because Merchhant password length is less than 10 digits / characters.
             $display_message = array("Status_code"=>422, "Message"=>'Your password must be at least of 5 digits/characters!');
             print_r(json_encode($display_message));
             $t2 = false;
@@ -52,16 +52,16 @@ class Secondary extends Database
         
     }
 
-    function login($semail1,$spassword1) // secondary login function
+    function login($memail1,$mpassword1) // Merchhant login function
     {
 
 
         $db = new DATABASE;
         $conn = $db->build_connection();
 
-        // sql query to check if email and password of secondary exists or not in DB.
+        // sql query to check if email and password of Merchhant exists or not in DB.
 
-        $q1 = "select * from ".$this->table_name ." WHERE password ='{$spassword1}'";
+        $q1 = "select * from ".$this->table_name ." WHERE password ='{$mpassword1}'";
         //print_r ($query);
 
         $result1 = mysqli_query($conn, $q1);
@@ -79,7 +79,7 @@ class Secondary extends Database
             $t1 = 0;
         }
 
-        $q2 = "select * from ".$this->table_name ." WHERE email ='{$semail1}'";
+        $q2 = "select * from ".$this->table_name ." WHERE email ='{$memail1}'";
 
         $result2 = mysqli_query($conn, $q2);
 
@@ -121,11 +121,11 @@ if($_SERVER["REQUEST_METHOD"] != "POST")
     exit();
 }
 
-// store secondary decoded data in respective variables
-$semail = $data['email'];
+// store Merchhant decoded data in respective variables
+$memail = $data['email'];
 
-// store secondary decoded data in respective variables
-$spassword = $data['password'];
+// store Merchhant decoded data in respective variables
+$mpassword = $data['password'];
 //echo $upassword;
 
 
@@ -134,12 +134,12 @@ $database = new DATABASE();
 // build database connection
 $database->build_connection() or die("no connection");
 
-// creating object of the class secondary
-$system = new Secondary(); 
+// creating object of the class Merchhant
+$system = new Merchhant(); 
 
 
-// check validations on secondary given inputs
-$check = $system->validation($semail,$spassword) or die("no valdation");
+// check validations on Merchhant given inputs
+$check = $system->validation($memail,$mpassword) or die("no valdation");
 
 // weather $check i empty or not
 //echo $check;
@@ -154,15 +154,15 @@ else if($check == 1)
 {
     // if function validate returns true the proceed 
     echo ("<br>"."Check is true for validation"."<br>");
-    // calling login function to check secondary login credentials
-    $flag = $system->login($semail,$spassword); 
+    // calling login function to check Merchhant login credentials
+    $flag = $system->login($memail,$mpassword); 
 }
 
 
 if($flag == 1)
 {
     //if password and email are matched display this message
-    $display_message = array("Status_code"=>200,"Message"=>"Successfully Login!","email"=>"$semail");
+    $display_message = array("Status_code"=>200,"Message"=>"Successfully Login!","email"=>"$memail");
     print_r(json_encode($display_message));
 
     
@@ -171,7 +171,7 @@ else if($flag == 0)
 {
 
     //if password and email are matched display this message
-    $display_message = array("Status_code"=>400,"Message"=>"Something went wrong!","email"=>"$semail","password"=>"$spassword");
+    $display_message = array("Status_code"=>400,"Message"=>"Something went wrong!","email"=>"$memail","password"=>"$mpassword");
     print_r(json_encode($display_message));
 }
 
